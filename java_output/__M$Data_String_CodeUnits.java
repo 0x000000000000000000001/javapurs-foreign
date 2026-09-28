@@ -74,10 +74,11 @@ public class __M$Data_String_CodeUnits {
     };
 
     public static Object _lastIndexOfStartingAt = (java.util.function.Function<Object, Object>) (just) -> (java.util.function.Function<Object, Object>) (nothing) -> (java.util.function.Function<Object, Object>) (x) -> (java.util.function.Function<Object, Object>) (startAt) -> (java.util.function.Function<Object, Object>) (s) -> {
+        // JavaScript clamps the starting position into [0, length].
         int start = (Integer) startAt;
         String str = (String) s;
-        if (start < 0 || start > str.length()) return nothing;
-        int i = str.lastIndexOf((String) x, start);
+        int from = Math.max(0, Math.min(start, str.length()));
+        int i = str.lastIndexOf((String) x, from);
         return i == -1 ? nothing : ((java.util.function.Function<Object, Object>) just).apply(i);
     };
 

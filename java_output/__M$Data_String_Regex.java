@@ -114,7 +114,23 @@ public class __M$Data_String_Regex {
 
     public static Object split = (java.util.function.Function<Object, Object>) (r) -> (java.util.function.Function<Object, Object>) (s) -> {
         java.util.regex.Pattern p = (java.util.regex.Pattern) ((java.util.LinkedHashMap<String, Object>) r).get("pattern");
-        return p.split((String) s, -1);
+        String str = (String) s;
+        if (str.isEmpty()) {
+            // JavaScript yields [] when the separator matches the empty string.
+            java.util.regex.Matcher matcher = p.matcher(str);
+            boolean zeroWidthMatch = matcher.find() && matcher.start() == 0 && matcher.end() == 0;
+            return zeroWidthMatch ? new Object[0] : new Object[]{""};
+        }
+        Object[] parts = p.split(str, -1);
+        // JavaScript drops the trailing empty piece produced by a zero-width
+        // match at the end ("abc".split(//) is ["a","b","c"]).
+        if (parts.length > 1 && parts[parts.length - 1].equals("")) {
+            java.util.regex.Matcher endMatcher = p.matcher(str);
+            if (endMatcher.find(str.length()) && endMatcher.start() == str.length() && endMatcher.end() == str.length()) {
+                parts = java.util.Arrays.copyOf(parts, parts.length - 1);
+            }
+        }
+        return parts;
     };
 
 

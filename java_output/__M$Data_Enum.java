@@ -4,10 +4,10 @@ public class __M$Data_Enum {
     };
     // FFI provided by ../javapurs-enums/src/Data/Enum.java
     public static Object toCharCode = (java.util.function.Function<Object, Object>) (c) ->
-        (int) ((Character) c);
+        (int) ((String) c).charAt(0);
 
     public static Object fromCharCode = (java.util.function.Function<Object, Object>) (c) ->
-        (char) ((Integer) c).intValue();
+        String.valueOf((char) ((Integer) c).intValue());
 
 
 public static final Object Cardinality = (java.util.function.Function<Object, Object>) (x_0_i0) -> { return x_0_i0; };

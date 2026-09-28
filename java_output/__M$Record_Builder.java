@@ -2,16 +2,41 @@ public class __M$Record_Builder {
     public static final Object FFI_STUB = new java.util.function.Function<Object, Object>() {
         public Object apply(Object arg) { throw new UnsupportedOperationException("Missing Java FFI in Record.Builder"); }
     };
-    public static Object copyRecord = FFI_STUB;
-    public static Object copyRecord(Object... args) { throw new UnsupportedOperationException("Missing Java FFI: Record.Builder.copyRecord"); }
-    public static Object unsafeDelete = FFI_STUB;
-    public static Object unsafeDelete(Object... args) { throw new UnsupportedOperationException("Missing Java FFI: Record.Builder.unsafeDelete"); }
-    public static Object unsafeInsert = FFI_STUB;
-    public static Object unsafeInsert(Object... args) { throw new UnsupportedOperationException("Missing Java FFI: Record.Builder.unsafeInsert"); }
-    public static Object unsafeModify = FFI_STUB;
-    public static Object unsafeModify(Object... args) { throw new UnsupportedOperationException("Missing Java FFI: Record.Builder.unsafeModify"); }
-    public static Object unsafeRename = FFI_STUB;
-    public static Object unsafeRename(Object... args) { throw new UnsupportedOperationException("Missing Java FFI: Record.Builder.unsafeRename"); }
+    // FFI provided by ../javapurs-record/src/Record/Builder.java
+    // Port of Record/Builder.js. Records are maps (the typed-record classes
+    // extend AbstractMap, so the map operations keep working).
+    public static Object copyRecord = (java.util.function.Function<Object, Object>) (rec) ->
+        new java.util.LinkedHashMap<>((java.util.Map<String, Object>) rec);
+
+    public static Object unsafeInsert = (java.util.function.Function<Object, Object>) (l) ->
+        (java.util.function.Function<Object, Object>) (a) ->
+        (java.util.function.Function<Object, Object>) (rec) -> {
+            ((java.util.Map<String, Object>) rec).put((String) l, a);
+            return rec;
+        };
+
+    public static Object unsafeModify = (java.util.function.Function<Object, Object>) (l) ->
+        (java.util.function.Function<Object, Object>) (f) ->
+        (java.util.function.Function<Object, Object>) (rec) -> {
+            java.util.Map<String, Object> map = (java.util.Map<String, Object>) rec;
+            map.put((String) l, ((java.util.function.Function<Object, Object>) f).apply(map.get((String) l)));
+            return rec;
+        };
+
+    public static Object unsafeDelete = (java.util.function.Function<Object, Object>) (l) ->
+        (java.util.function.Function<Object, Object>) (rec) -> {
+            ((java.util.Map<String, Object>) rec).remove((String) l);
+            return rec;
+        };
+
+    public static Object unsafeRename = (java.util.function.Function<Object, Object>) (l1) ->
+        (java.util.function.Function<Object, Object>) (l2) ->
+        (java.util.function.Function<Object, Object>) (rec) -> {
+            java.util.Map<String, Object> map = (java.util.Map<String, Object>) rec;
+            map.put((String) l2, map.remove((String) l1));
+            return rec;
+        };
+
 
 public static final Object union = (java.util.function.Function<Object, Object>) (_dollar___unused_0_i0) -> { return (java.util.function.Function<Object, Object>) (r1_1_i1) -> { return (java.util.function.Function<Object, Object>) (r2_2_i2) -> { return ((java.util.function.Function<Object, Object>) (((java.util.function.Function<Object, Object>) (__M$Record_Unsafe_Union.unsafeUnionFn)).apply(r1_1_i1))).apply(r2_2_i2); }; }; };
 public static final Object semigroupoidBuilder = __M$Control_Semigroupoid.semigroupoidFn;
