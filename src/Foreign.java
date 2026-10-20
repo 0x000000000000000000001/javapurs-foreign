@@ -1,7 +1,13 @@
     // Port of Foreign.js. JavaScript's typeof/tagOf over this backend's values:
     // strings, boxed numbers, booleans, functions (Function or Supplier),
-    // Object[] arrays and maps/records.
+    // Object[] arrays and maps/records. Missing object properties use a shared
+    // undefined sentinel, distinct from JSON null.
+    public static final Object undefined = new Object() {
+        @Override public String toString() { return "undefined"; }
+    };
+
     public static Object typeOf = (java.util.function.Function<Object, Object>) (value) -> {
+        if (value == undefined) return "undefined";
         if (value instanceof String) return "string";
         if (value instanceof Number) return "number";
         if (value instanceof Boolean) return "boolean";
@@ -11,6 +17,7 @@
     };
 
     public static Object tagOf = (java.util.function.Function<Object, Object>) (value) -> {
+        if (value == undefined) return "Undefined";
         if (value == null) return "Null";
         if (value instanceof String) return "String";
         if (value instanceof Number) return "Number";
@@ -23,6 +30,6 @@
 
     public static Object isNull = (java.util.function.Function<Object, Object>) (value) -> value == null;
 
-    public static Object isUndefined = (java.util.function.Function<Object, Object>) (value) -> false;
+    public static Object isUndefined = (java.util.function.Function<Object, Object>) (value) -> value == undefined;
 
     public static Object isArray = (java.util.function.Function<Object, Object>) (value) -> value instanceof Object[];
